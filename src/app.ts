@@ -96,7 +96,7 @@ loginForm.addEventListener('submit', (e: Event) => {
      });
      console.log(user)
    //   window.location.href = "./dashbord.html"
-   window.location.href = "../dashbord/index.html";
+   window.location.href = "/dashbord/index.html";
    })
    .catch((error : Error) => {
     //  const errorCode = error.code;
