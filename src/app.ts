@@ -6,6 +6,9 @@ const showButtons = document.querySelectorAll('#show') as NodeListOf<HTMLElement
 const signupForm = document.getElementById('signup-form') as HTMLFormElement;
 const sig_name = document.getElementById('name') as HTMLInputElement;
 const loginForm = document.getElementById('login-form') as HTMLFormElement;
+const loader = document.getElementById('loader') as HTMLDivElement;
+const contanir_box = document.getElementById('contanir') as HTMLDivElement;
+
 
 singupBtn.addEventListener('click', () => {
    contanir.classList.add('active');
@@ -117,6 +120,17 @@ onAuthStateChanged(auth, (user : any) => {
     //  window.location.href = '../index.html'
    }
  });
+
+
+function formloader(){
+  setTimeout(() => {
+    loader.style.display = 'none';
+    contanir_box.style.display = 'block';
+  },1000)
+}
+
+window.addEventListener('load', formloader)
+
 
 
 export{
