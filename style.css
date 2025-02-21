@@ -12,6 +12,21 @@ body{
    min-height: 100vh;
    background: linear-gradient(90deg, #e2e2e2, #c9d6ff);
 }
+.loader{
+   background-color: #fff;
+   height: 100vh;
+   width: 100%;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+
+}
+.loader-div img{
+   width: 300px;
+}
+#contanir{
+   display: none;
+}
 .contanir{
    position: relative;
    width: 850px;
@@ -204,6 +219,9 @@ form{
    .toggle-panel.toggel-right{
       right: 0;
       bottom: -30%;
+   }
+   .loader-div img{
+      width: 200px;
    }
 }
 @media(max-width: 400px){
