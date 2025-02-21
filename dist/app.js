@@ -6,6 +6,8 @@ const showButtons = document.querySelectorAll('#show');
 const signupForm = document.getElementById('signup-form');
 const sig_name = document.getElementById('name');
 const loginForm = document.getElementById('login-form');
+const loader = document.getElementById('loader');
+const contanir_box = document.getElementById('contanir');
 singupBtn.addEventListener('click', () => {
     contanir.classList.add('active');
 });
@@ -105,4 +107,11 @@ onAuthStateChanged(auth, (user) => {
         //  window.location.href = '../index.html'
     }
 });
+function formloader() {
+    setTimeout(() => {
+        loader.style.display = 'none';
+        contanir_box.style.display = 'block';
+    }, 1000);
+}
+window.addEventListener('load', formloader);
 export { sig_name };
