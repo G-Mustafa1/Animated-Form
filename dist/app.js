@@ -8,6 +8,7 @@ const sig_name = document.getElementById('name');
 const loginForm = document.getElementById('login-form');
 const loader = document.getElementById('loader');
 const contanir_box = document.getElementById('contanir');
+import { auth, db, createUserWithEmailAndPassword, signInWithEmailAndPassword, setDoc, doc } from './firebase.js';
 singupBtn.addEventListener('click', () => {
     contanir.classList.add('active');
 });
@@ -38,74 +39,58 @@ showButtons.forEach((hy) => {
 // import {app,auth,createUserWithEmailAndPassword,signInWithEmailAndPassword ,signOut} from "./firebase";
 // console.log(createUserWithEmailAndPassword)
 // console.log(auth)
-import { auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from './firebase.js';
-signupForm.addEventListener('submit', (e) => {
+signupForm.addEventListener('submit', async (e) => {
     e.preventDefault();
+    const name = sig_name.value;
     const email = document.getElementById('email_sig').value;
     const password = document.getElementById('password_sig').value;
-    createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-        // Signed up 
+    try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
-        console.log(user);
+        await setDoc(doc(db, "name", user.uid), {
+            name,
+            email,
+        });
         Swal.fire({
             title: "success",
-            text: "Signed up successfully!",
+            text: "User signed up successfully!",
             icon: "success"
         }).then(() => {
             window.location.reload();
         });
-    })
-        .catch((error) => {
-        //  const errorCode = error.code;
+    }
+    catch (error) {
         const errorMessage = error.message;
-        console.log(errorMessage);
         Swal.fire({
             title: "error",
             text: errorMessage,
             icon: "error"
         });
-        // ..
-    });
+    }
 });
-loginForm.addEventListener('submit', (e) => {
+loginForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const email = document.getElementById('email_log').value;
     const password = document.getElementById('password_log').value;
-    signInWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-        // Signed in 
+    try {
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
-        // ...
         Swal.fire({
             title: "success",
             text: "Loged in successfully!",
             icon: "success"
         });
-        console.log(user);
-        //   window.location.href = "./dashbord.html"
-        window.location.href = "/dashbord/index.html";
-    })
-        .catch((error) => {
-        //  const errorCode = error.code;
+        window.location.href = "../dashbord/index.html";
+    }
+    catch (error) {
         const errorMessage = error.message;
         Swal.fire({
             title: "error",
             text: errorMessage,
             icon: "error"
         });
-    });
+    }
     loginForm.reset();
-});
-onAuthStateChanged(auth, (user) => {
-    if (user) {
-        const uid = user.uid;
-        console.log(uid, 'user loged in');
-    }
-    else {
-        // User is signed out
-        //  window.location.href = '../index.html'
-    }
 });
 function formloader() {
     setTimeout(() => {

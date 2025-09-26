@@ -1,10 +1,24 @@
-import { auth, signOut } from "./firebase.js";
-console.log('sg', signOut);
+import { auth, signOut, getDoc, doc, db, onAuthStateChanged } from "./firebase.js";
 const nav_nam = document.getElementById('nav-nam');
 const sing_out = document.getElementById('sing-out');
 const hide = document.getElementById('hide');
 const loader = document.getElementById('loader');
-nav_nam.textContent = "Hello' Welcome !";
+onAuthStateChanged(auth, async (user) => {
+    console.log(user, 'user loged in');
+    if (user) {
+        const userDoc = await getDoc(doc(db, "name", user.uid));
+        if (userDoc.exists()) {
+            const userData = userDoc.data();
+            nav_nam.textContent = `Hello ${userData.name} !`;
+        }
+        else {
+            nav_nam.textContent = `Hello ${user.email} !`;
+        }
+    }
+    else {
+        window.location.href = '../index.html';
+    }
+});
 sing_out.addEventListener('submit', (e) => {
     e.preventDefault();
     console.log('hy');
@@ -27,7 +41,6 @@ sing_out.addEventListener('submit', (e) => {
         });
     });
 });
-
 function loadform() {
     setTimeout(() => {
         loader.style.display = 'none';
@@ -35,5 +48,3 @@ function loadform() {
     }, 1000);
 }
 window.addEventListener('load', loadform);
-
-

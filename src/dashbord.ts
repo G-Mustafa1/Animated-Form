@@ -1,17 +1,26 @@
-import { auth, signOut } from "./firebase";
+import { auth, signOut, getDoc, doc, db, onAuthStateChanged } from "./firebase";
 import { sig_name } from "./app";
-
-console.log('sg', signOut)
 
 const nav_nam = document.getElementById('nav-nam') as HTMLElement;
 const sing_out = document.getElementById('sing-out') as HTMLFormElement;
 const hide = document.getElementById('hide') as HTMLDivElement;
 const loader = document.getElementById('loader') as HTMLDivElement;
 
-const userName = localStorage.getItem("name");
-if(userName){
-   nav_nam.textContent = `Hello' ${userName} !`;
-}
+onAuthStateChanged(auth, async (user) => {
+   console.log(user, 'user loged in');
+   if (user) {
+      const userDoc = await getDoc(doc(db, "name", user.uid));
+      if (userDoc.exists()) {
+         const userData = userDoc.data();
+         nav_nam.textContent = `Hello ${userData.name} !`;
+      } else {
+         nav_nam.textContent = `Hello ${user.email} !`;
+      }
+   } else {
+      window.location.href = '../index.html';
+   }
+})
+
 sing_out.addEventListener('submit', (e: Event) => {
    e.preventDefault()
    console.log('hy')
@@ -35,11 +44,11 @@ sing_out.addEventListener('submit', (e: Event) => {
    });
 })
 
-function loadform(){
+function loadform() {
    setTimeout(() => {
       loader.style.display = 'none';
       hide.style.display = 'block';
-   },1000)
+   }, 1000)
 }
 
 window.addEventListener('load', loadform)
