@@ -1,13 +1,11 @@
 import { auth, signOut, getDoc, doc, db, onAuthStateChanged } from "./firebase";
-import { sig_name } from "./app";
 
 const nav_nam = document.getElementById('nav-nam') as HTMLElement;
 const sing_out = document.getElementById('sing-out') as HTMLFormElement;
 const hide = document.getElementById('hide') as HTMLDivElement;
 const loader = document.getElementById('loader') as HTMLDivElement;
 
-onAuthStateChanged(auth, async (user) => {
-   console.log(user, 'user loged in');
+onAuthStateChanged(auth, async (user : any) => {
    if (user) {
       const userDoc = await getDoc(doc(db, "name", user.uid));
       if (userDoc.exists()) {
@@ -23,7 +21,6 @@ onAuthStateChanged(auth, async (user) => {
 
 sing_out.addEventListener('submit', (e: Event) => {
    e.preventDefault()
-   console.log('hy')
    signOut(auth).then(() => {
       // Sign-out successful.
       Swal.fire({

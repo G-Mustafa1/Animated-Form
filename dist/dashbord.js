@@ -4,7 +4,6 @@ const sing_out = document.getElementById('sing-out');
 const hide = document.getElementById('hide');
 const loader = document.getElementById('loader');
 onAuthStateChanged(auth, async (user) => {
-    console.log(user, 'user loged in');
     if (user) {
         const userDoc = await getDoc(doc(db, "name", user.uid));
         if (userDoc.exists()) {
@@ -21,7 +20,6 @@ onAuthStateChanged(auth, async (user) => {
 });
 sing_out.addEventListener('submit', (e) => {
     e.preventDefault();
-    console.log('hy');
     signOut(auth).then(() => {
         // Sign-out successful.
         Swal.fire({
